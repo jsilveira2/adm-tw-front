@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PrimeNGConfig } from 'primeng/api';
+import { MessageService, Message } from 'primeng/api';
 
 @Component({
     selector: 'app-root',
@@ -7,9 +8,14 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent implements OnInit {
 
-    constructor(private primengConfig: PrimeNGConfig) { }
+    messages: any = [];
+
+    constructor(private primengConfig: PrimeNGConfig, private messageService: MessageService) { }
 
     ngOnInit() {
         this.primengConfig.ripple = true;
+        this.messageService.messageObserver.subscribe(messages => {
+            this.messages = messages;
+        });
     }
 }
