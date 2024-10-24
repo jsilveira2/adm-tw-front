@@ -24,9 +24,9 @@ export class UsersListComponent implements OnInit {
 	constructor(private service: AdmService) { }
 
 	ngOnInit(): void {
-		this.userList = [
-			{ name: 'Teste', email: 'teste@teste.com', isActive: true, lastLogin: new Date(), isLocked: false, loginAttempts: 0 }
-		]
+		this.service.getUsers().subscribe(result => {
+			this.userList = result;
+		});
 	}
 
 	applyFilterGlobal($event: any, stringVal: any) {

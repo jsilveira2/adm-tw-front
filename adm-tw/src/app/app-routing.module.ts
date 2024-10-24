@@ -1,13 +1,13 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AppLayoutComponent } from "./layout/app.layout.component";
 import { NotfoundComponent } from './notfound/notfound.component';
+import { AppComponent } from './app.component';
 
 @NgModule({
     imports: [
         RouterModule.forRoot([
             {
-                path: '', component: AppLayoutComponent,
+                path: '', component: AppComponent,
                 children: []
             },
             { path: 'users', loadChildren: () => import('./adm/adm.module').then(m => m.AdmModule) },

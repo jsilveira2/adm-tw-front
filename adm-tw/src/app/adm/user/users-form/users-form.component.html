@@ -1,1 +1,46 @@
-<p>users-form works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div class="card p-fluid">
+            <h5>Cadastro de Usuários</h5>
+            <div class="p-fluid p-formgrid grid" [formGroup]="form">
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="name">Nome*</label>
+                    <input formControlName="name" pInputText id="name" type="text" />
+                    <p-message *ngIf="form.get('name')?.invalid && form.get('name')?.touched" severity="error"
+                        text="Campo obrigatório"></p-message>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="email">Email</label>
+                    <input formControlName="email" pInputText id="email" type="text" />
+                    <p-message *ngIf="form.get('email')?.invalid && form.get('email')?.touched" severity="error"
+                        text="Informe um e-mail válido"></p-message>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="password">Senha</label>
+                    <p-password id="password" formControlName="password" [toggleMask]="true"
+                        promptLabel="Escolha sua senha" weakLabel="Fraca" mediumLabel="Média"
+                        strongLabel="Forte"></p-password>
+                    <p-message *ngIf="form.get('password')?.invalid && form.get('password')?.touched" severity="error"
+                        text="Campo obrigatório"></p-message>
+                </div>
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="passwordConfirm">Confirmação senha</label>
+                    <p-password id="passwordConfirm" formControlName="passwordConfirm" [toggleMask]="true"
+                        promptLabel="Escolha sua senha" weakLabel="Fraca" mediumLabel="Média"
+                        strongLabel="Forte"></p-password>
+                    <p-message *ngIf="form.get('passwordConfirm')?.invalid && form.get('passwordConfirm')?.touched"
+                        severity="error" text="Campo obrigatório"></p-message>
+                </div>
+                
+                <div class="field col-12">
+                    <p-message *ngIf="noMatchPassword" severity="error"
+                        text="Campo Senha e Confirmação senha são incompatíveis "></p-message>
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <p-button (click)="save()" label="Salvar" icon="pi pi-save"></p-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

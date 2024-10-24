@@ -14,4 +14,8 @@ export class AdmService {
     getUsers(): Observable<User[]> {
         return this.http.get<User[]>(`${this.apiUrl}/users`);
     }
+
+    saveUser(obj: User): Observable<User> {
+        return this.http.post<User>(`${this.apiUrl}/users`, obj);
+    }
 }
