@@ -1,19 +1,17 @@
 import { ErrorHandler, Injectable, NgZone } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { NotificationService } from './shared/service/notification.service';
+import { Severity } from './shared/model/severity.model';
 
 @Injectable()
-export class AppErrorHandler implements ErrorHandler {
-    constructor() {}
+export class GlobalErrorHandler implements ErrorHandler {
+    constructor(private notificationService: NotificationService) {}
 
     handleError(error: any): void {
         console.error('Erro capturado:', error);
-        // this.ngZone.run(() => {
-        //     this.messageService.add({
-        //         severity: 'error',
-        //         summary: 'Erro inesperado',
-        //         detail: 'Ocorreu um erro durante a requisição. Tente novamente mais tarde.'
-        //     });
-        // });
+        if (!error.missingToken) {
+            this.notificationService.showToast(Severity.danger, 'Erro', 'Houve um erro inesperado, tente novamente mais tarde!');
+        }
+
         // TODO logService
     }
 }

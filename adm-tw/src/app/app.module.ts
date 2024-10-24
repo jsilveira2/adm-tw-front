@@ -11,7 +11,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 import { HttpRequestInterceptor } from './interceptors/http.service';
-import { AppErrorHandler } from './app-error-handler.service';
+import { GlobalErrorHandler } from './app-error-handler.service';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { AuthService } from './auth/auth.service';
 import { NotificationService } from './shared/service/notification.service';
@@ -44,12 +44,12 @@ import { LayoutService } from './layout/service/app.layout.service';
         AppConfigModule,
     ],
     providers: [
+        { provide: ErrorHandler, useClass: GlobalErrorHandler },
         AuthService,
         LayoutService,
         NotificationService,
         MessageService,
         { provide: LocationStrategy, useClass: PathLocationStrategy },
-        { provide: ErrorHandler, useClass: AppErrorHandler },
         provideHttpClient(withInterceptorsFromDi()),
         { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
     ],

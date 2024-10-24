@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../user.model';
 import { AdmService } from '../../adm.service';
 import { NotificationService } from '../../../shared/service/notification.service';
+import { Severity } from '../../../shared/model/severity.model';
 
 @Component({
 	selector: 'app-users-form',
@@ -47,7 +48,7 @@ export class UsersFormComponent implements OnInit {
 
 			this.service.saveUser(user).subscribe(result => {
 				if (result.id) {
-					this.notificationService.showToast('success', 'Sucesso', 'Usuário cadastrado com sucesso!');
+					this.notificationService.showToast(Severity.success, 'Sucesso', 'Usuário cadastrado com sucesso!');
 				}
 			});
 		} else {
