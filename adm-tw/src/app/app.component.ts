@@ -14,7 +14,9 @@ import { NavigationEnd, Router } from '@angular/router';
 export class AppComponent implements OnInit, OnDestroy {
 
     messages: any = [];
-    
+
+    showMenu: boolean = false;
+
     overlayMenuOpenSubscription: Subscription;
 
     menuOutsideClickListener: any;
@@ -26,18 +28,18 @@ export class AppComponent implements OnInit, OnDestroy {
     @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
 
     constructor(
-        public layoutService: LayoutService, 
-        public renderer: Renderer2, 
+        public layoutService: LayoutService,
+        public renderer: Renderer2,
         public router: Router,
-        private primengConfig: PrimeNGConfig, 
+        private primengConfig: PrimeNGConfig,
         private messageService: MessageService
-    ) { 
+    ) {
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
             if (!this.menuOutsideClickListener) {
                 this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
-                    const isOutsideClicked = !(this.appSidebar.el.nativeElement.isSameNode(event.target) || this.appSidebar.el.nativeElement.contains(event.target) 
+                    const isOutsideClicked = !(this.appSidebar.el.nativeElement.isSameNode(event.target) || this.appSidebar.el.nativeElement.contains(event.target)
                         || this.appTopbar.menuButton.nativeElement.isSameNode(event.target) || this.appTopbar.menuButton.nativeElement.contains(event.target));
-                    
+
                     if (isOutsideClicked) {
                         this.hideMenu();
                     }
@@ -69,6 +71,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.primengConfig.ripple = true;
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => {
+                this.checkIfShowMenu(event.url);
+            });
+
         this.messageService.messageObserver.subscribe(messages => {
             this.messages = messages;
         });
@@ -125,6 +132,20 @@ export class AppComponent implements OnInit, OnDestroy {
             'p-ripple-disabled': !this.layoutService.config().ripple
         }
     }
+
+    checkIfShowMenu(url: string) {        
+        const routesToHideMenu = [
+            '/auth/login',
+            '/auth/register'
+        ];
+    
+        if (!routesToHideMenu.some(route => url.includes(route))) {
+            this.showMenu = true;
+        } else {
+            this.showMenu = false;
+        };
+    }
+    
 
     ngOnDestroy() {
         if (this.overlayMenuOpenSubscription) {

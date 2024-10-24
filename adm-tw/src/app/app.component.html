@@ -1,4 +1,4 @@
-<div class="layout-wrapper" [ngClass]="containerClass">
+<div *ngIf="showMenu" class="layout-wrapper" [ngClass]="containerClass">
     <p-messages key="global"></p-messages>
 
     <p-toast></p-toast>
@@ -15,4 +15,8 @@
     </div>
     <app-config></app-config>
     <div class="layout-mask"></div>
+</div>
+
+<div *ngIf="!showMenu">
+    <router-outlet></router-outlet>
 </div>
