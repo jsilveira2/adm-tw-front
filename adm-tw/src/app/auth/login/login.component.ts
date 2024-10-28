@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { LoginResponse } from '../login-response.model';
+import { NotificationService } from '../../shared/service/notification.service';
+import { Severity } from '../../shared/model/severity.model';
 
 @Component({
     selector: 'app-login',
@@ -21,7 +23,7 @@ export class LoginComponent {
     password!: string;
     rememberme!: boolean;
 
-    constructor(private service: AuthService, private router: Router) { }
+    constructor(private service: AuthService, private router: Router, private notifyService: NotificationService) { }
 
     login() {
         this.service.login(this.email, this.password).subscribe({
@@ -29,6 +31,7 @@ export class LoginComponent {
                 this.router.navigate(['/']);
             },
             error: (error) => {
+                this.notifyService.showToast(Severity.warning, 'Login recusado', 'Email ou senha inválidos');
                 console.error('Erro no login:', error);
             }
         });

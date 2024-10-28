@@ -6,11 +6,8 @@ import { AppComponent } from './app.component';
 @NgModule({
     imports: [
         RouterModule.forRoot([
-            {
-                path: '', component: AppComponent,
-                children: []
-            },
-            { path: 'users', loadChildren: () => import('./adm/adm.module').then(m => m.AdmModule) },
+            { path: '', component: AppComponent },
+            { path: 'adm', loadChildren: () => import('./adm/adm.module').then(m => m.AdmModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
             { path: '**', redirectTo: '/notfound' },

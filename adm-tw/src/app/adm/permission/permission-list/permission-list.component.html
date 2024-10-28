@@ -1,13 +1,14 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
-            <h5>Lista de Usuários</h5>
-            <p-table #dt [columns]="cols" [value]="userList" dataKey="id" [rows]="10"
+            <h5>Lista de Permissões</h5>
+
+            <p-table #dt [columns]="cols" [value]="dataList" dataKey="id" [rows]="10"
                 [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true"
                 [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template pTemplate="caption">
 					<div class="flex justify-content-between flex-column sm:flex-row">
-						<p-button label="Novo" [outlined]="true" icon="pi pi-plus-circle" [routerLink]="['/adm/user/form']" />
+						<p-button label="Novo" [outlined]="true" icon="pi pi-plus-circle" [routerLink]="['/adm/permission/form']" />
 						<span class="p-input-icon-left mb-2">
 							<i class="pi pi-search"></i>
 							<input pInputText type="text" #filter (input)="applyFilterGlobal($event, 'contains')" placeholder="Pesquisar" class="w-full"/>
@@ -29,14 +30,11 @@
                 <ng-template pTemplate="body" let-rowData let-columns="columns">
                     <tr>
                         <td *ngFor="let col of columns">
-                            <ng-container *ngIf="col.field === 'isActive' || col.field === 'isLocked'; else dateCell">
+                            <ng-container *ngIf="col.field === 'isActive'; else defaultCell">
                                 <p-tag [value]="rowData[col.field] ? 'Sim' : 'Não'" [severity]="getSeverity(rowData[col.field])" />
                             </ng-container>
-                            <ng-template #dateCell>
-                                <ng-container *ngIf="col.field === 'lastLogin'">
-                                    {{ rowData[col.field] | date: 'dd/MM/yyyy HH:mm' }}
-                                </ng-container>
-                                <ng-container *ngIf="col.field !== 'lastLogin' && col.field !== 'isActive' && col.field !== 'isLocked'">
+                            <ng-template #defaultCell>
+                                <ng-container *ngIf="col.field !== 'isActive'">
                                     {{ rowData[col.field] }}
                                 </ng-container>
                             </ng-template>
@@ -45,7 +43,7 @@
                         <td>
                             <ng-container>
                                 <div class="tableButton">
-                                    <p-button icon="pi pi-user-edit" [rounded]="true" pTooltip="Editar" tooltipPosition="bottom" (click)="edit(rowData.id)" />
+                                    <p-button icon="pi pi-pen-to-square" [rounded]="true" pTooltip="Editar" tooltipPosition="bottom" (click)="edit(rowData.id)" />
                                     <p-button *ngIf="rowData.isActive" severity="danger" icon="pi pi-times-circle" [rounded]="true" pTooltip="Inativar" tooltipPosition="bottom" (click)="disable(rowData.id)" />
                                     <p-button *ngIf="!rowData.isActive" severity="success" icon="pi pi-check-circle" [rounded]="true" pTooltip="Reativar" tooltipPosition="bottom" (click)="enable(rowData.id)" />
                                 </div>

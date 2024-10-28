@@ -12,3 +12,22 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
+
+.tableButton {
+    display: flex;
+    gap: 5px;
+}
+
+.required {
+    position: relative;
+    display: inline-block;
+}
+
+.required::after {
+    content: '*';
+    color: #FFA500;
+    font-size: 0.8rem;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+}

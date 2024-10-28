@@ -5,31 +5,28 @@ import { Table } from 'primeng/table';
 import { ConfirmationService } from 'primeng/api';
 
 import { Column } from '../../../utils/model/column.model';
-import { User } from '../user.model';
-import { UserService } from '../user.service';
-import { NotificationService } from '../../../shared/service/notification.service';
 import { Severity } from '../../../shared/model/severity.model';
+import { NotificationService } from '../../../shared/service/notification.service';
+import { Permission } from '../permission.model';
+import { PermissionService } from '../permission.service';
 
 @Component({
-	selector: 'app-users-list',
-	templateUrl: './users-list.component.html',
-	styleUrl: './users-list.component.scss'
+  selector: 'app-permission-list',
+  templateUrl: './permission-list.component.html',
+  styleUrl: './permission-list.component.scss'
 })
-export class UsersListComponent implements OnInit {
+export class PermissionListComponent {
 
 	@ViewChild('dt') dt: Table | undefined;
+	dataList: Permission[] = [];
 	cols: Column[] = [
 		{ field: 'name', header: 'Nome' },
-		{ field: 'email', header: 'Email' },
-		{ field: 'isActive', header: 'Ativo' },
-		{ field: 'lastLogin', header: 'Dt. Último login' },
-		{ field: 'isLocked', header: 'Bloqueado' }
+		{ field: 'codeName', header: 'Código' },
+		{ field: 'isActive', header: 'Ativo' }
 	];
-	
-	userList: User[] = [];
 
 	constructor(
-		private service: UserService, 
+		private service: PermissionService, 
 		private router: Router,
 		private confirmationService: ConfirmationService,
 		private notifyService: NotificationService
@@ -41,7 +38,7 @@ export class UsersListComponent implements OnInit {
 
 	getData() {
 		this.service.get().subscribe(result => {
-			this.userList = result;
+			this.dataList = result;
 		});
 	}
 
@@ -58,31 +55,31 @@ export class UsersListComponent implements OnInit {
 	}
 
 	edit(id: string) {
-		this.router.navigate([`/adm/user/form/${id}`]);
+		this.router.navigate([`/adm/permission/form/${id}`]);
 	}
 
 	disable(id: string) {
 		this.confirmationService.confirm({
-            message: 'Deseja realmente inativar esse usuário?',
+            message: 'Deseja realmente inativar essa permissão?',
             header: 'Confirmação de inativação',
             acceptButtonStyleClass:"p-button-danger",
 			acceptLabel: 'Sim',
 			rejectLabel: 'Não',
             accept: () => {
-				this.changeStatus(id, false, 'Usuário inativado.');
+				this.changeStatus(id, false, 'Permissão inativada.');
             },
         });
 	}
 
 	enable(id: string) {
 		this.confirmationService.confirm({
-            message: 'Deseja realmente reativar esse usuário?',
+            message: 'Deseja realmente reativar essa permissão?',
             header: 'Confirmação de reativação',
             acceptButtonStyleClass:"p-button-danger",
 			acceptLabel: 'Sim',
 			rejectLabel: 'Não',
             accept: () => {
-				this.changeStatus(id, false, 'Usuário reativado.');
+				this.changeStatus(id, true, 'Permissão reativada.');
             },
         });
 	}
