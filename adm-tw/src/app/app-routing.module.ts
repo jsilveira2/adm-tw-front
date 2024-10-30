@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
         RouterModule.forRoot([
             { path: '', component: AppComponent },
             { path: 'adm', loadChildren: () => import('./adm/adm.module').then(m => m.AdmModule) },
+            { path: 'guild-adm', loadChildren: () => import('./guild-adm/guild-adm.module').then(m => m.GuildAdmModule) },
             { path: 'notfound', component: NotfoundComponent },
             { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
             { path: '**', redirectTo: '/notfound' },

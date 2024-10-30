@@ -42,9 +42,9 @@ export class AppMenuComponent implements OnInit {
                 ]
             },
             {
-                label: 'Prime Blocks',
+                label: 'Guild Adm',
                 items: [
-                    { label: 'Free Blocks', icon: 'pi pi-fw pi-eye', routerLink: ['/blocks'], badge: 'NEW' },
+                    { label: 'Guilds', icon: 'pi pi-fw pi-shield', routerLink: ['/guild-adm/guild/list'] },
                     { label: 'All Blocks', icon: 'pi pi-fw pi-globe', url: ['https://www.primefaces.org/primeblocks-ng'], target: '_blank' },
                 ]
             },

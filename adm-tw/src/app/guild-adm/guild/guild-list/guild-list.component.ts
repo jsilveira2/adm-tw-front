@@ -5,28 +5,28 @@ import { Table } from 'primeng/table';
 import { ConfirmationService } from 'primeng/api';
 
 import { Column } from '../../../utils/model/column.model';
-import { Role } from '../role.model';
-import { RoleService } from '../role.service';
 import { NotificationService } from '../../../shared/service/notification.service';
 import { Severity } from '../../../shared/model/severity.model';
+import { Guild } from '../guild.model';
+import { GuildService } from '../guild.service';
 
 @Component({
-	selector: 'app-role-list',
-	templateUrl: './role-list.component.html',
-	styleUrl: './role-list.component.scss'
+	selector: 'app-guild-list',
+	templateUrl: './guild-list.component.html',
+	styleUrl: './guild-list.component.scss'
 })
-export class RoleListComponent implements OnInit {
+export class GuildListComponent implements OnInit {
 
 	@ViewChild('dt') dt: Table | undefined;
-	dataList: Role[] = [];
 	cols: Column[] = [
 		{ field: 'name', header: 'Nome' },
-		{ field: 'codeName', header: 'Código' },
 		{ field: 'isActive', header: 'Ativo' }
 	];
 
+	dataList: Guild[] = [];
+
 	constructor(
-		private service: RoleService, 
+		private service: GuildService, 
 		private router: Router,
 		private confirmationService: ConfirmationService,
 		private notifyService: NotificationService
@@ -55,18 +55,18 @@ export class RoleListComponent implements OnInit {
 	}
 
 	edit(id: string) {
-		this.router.navigate([`/adm/role/form/${id}`]);
+		this.router.navigate([`/guild-adm/guild/form/${id}`]);
 	}
 
 	enableOrDisable(id: string, reativar: boolean = false) {
-		let msg = 'Deseja realmente inativar esse papel?';
+		let msg = 'Deseja realmente inativar essa guild?';
 		let header = 'Confirmação de inativação';
-		let successMsg = 'Papel inativado.';
+		let successMsg = 'Guild inativada.';
 
 		if (reativar) {
-			msg = 'Deseja realmente reativar esse papel?';
+			msg = 'Deseja realmente reativar essa guild?';
 			header = 'Confirmação de reativação';
-			successMsg = 'Papel reativado.';
+			successMsg = 'Guild reativada.';
 		}
 
 		this.confirmationService.confirm({
@@ -92,5 +92,9 @@ export class RoleListComponent implements OnInit {
 				this.getData();
 			});
 		});
+	}
+
+	usersFromGuild(guildId: string) {
+		this.router.navigate([`/guild-adm/user-guild/form/${guildId}`]);
 	}
 }

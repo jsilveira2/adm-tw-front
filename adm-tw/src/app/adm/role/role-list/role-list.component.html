@@ -44,8 +44,8 @@
                             <ng-container>
                                 <div class="tableButton">
                                     <p-button icon="pi pi-pen-to-square" [rounded]="true" pTooltip="Editar" tooltipPosition="bottom" (click)="edit(rowData.id)" />
-                                    <p-button *ngIf="rowData.isActive" severity="danger" icon="pi pi-times-circle" [rounded]="true" pTooltip="Inativar" tooltipPosition="bottom" (click)="disable(rowData.id)" />
-                                    <p-button *ngIf="!rowData.isActive" severity="success" icon="pi pi-check-circle" [rounded]="true" pTooltip="Reativar" tooltipPosition="bottom" (click)="enable(rowData.id)" />
+                                    <p-button *ngIf="rowData.isActive" severity="danger" icon="pi pi-times-circle" [rounded]="true" pTooltip="Inativar" tooltipPosition="bottom" (click)="enableOrDisable(rowData.id)" />
+                                    <p-button *ngIf="!rowData.isActive" severity="success" icon="pi pi-check-circle" [rounded]="true" pTooltip="Reativar" tooltipPosition="bottom" (click)="enableOrDisable(rowData.id, true)" />
                                 </div>
                             </ng-container>
                         </td>

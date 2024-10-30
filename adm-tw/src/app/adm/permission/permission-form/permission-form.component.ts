@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { NotificationService } from '../../../shared/service/notification.service';
 import { Severity } from '../../../shared/model/severity.model';
 
@@ -76,12 +77,21 @@ export class PermissionFormComponent implements OnInit {
 				isActive: true,
 			});
 
-			this.service.save(obj).subscribe(result => {
-				if (result.id) {
-					this.notificationService.showToast(Severity.success, 'Sucesso', 'Permissão cadastrada com sucesso!');
-					this.form.reset();
-				}
-			});
+			if (!this.id) {
+				this.service.save(obj).subscribe(result => {
+					if (result.id) {
+						this.notificationService.showToast(Severity.success, 'Sucesso', 'Permissão cadastrada com sucesso!');
+						this.form.reset();
+					}
+				});
+			} else {
+				obj.id = this.id;
+				this.service.update(obj.id, obj).subscribe(result => {
+					if (result.id) {
+						this.notificationService.showToast(Severity.success, 'Sucesso', 'Permissão atualizada com sucesso!');
+					}
+				});
+			}
 		} else {
 			this.form.markAllAsTouched();
 		}

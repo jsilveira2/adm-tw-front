@@ -61,28 +61,25 @@ export class UsersListComponent implements OnInit {
 		this.router.navigate([`/adm/user/form/${id}`]);
 	}
 
-	disable(id: string) {
-		this.confirmationService.confirm({
-            message: 'Deseja realmente inativar esse usuário?',
-            header: 'Confirmação de inativação',
-            acceptButtonStyleClass:"p-button-danger",
-			acceptLabel: 'Sim',
-			rejectLabel: 'Não',
-            accept: () => {
-				this.changeStatus(id, false, 'Usuário inativado.');
-            },
-        });
-	}
+	enableOrDisable(id: string, reativar: boolean = false) {
+		let msg = 'Deseja realmente inativar esse usuário?';
+		let header = 'Confirmação de inativação';
+		let successMsg = 'Usuário inativado.';
 
-	enable(id: string) {
+		if (reativar) {
+			msg = 'Deseja realmente reativar esse usuário?';
+			header = 'Confirmação de reativação';
+			successMsg = 'Usuário reativado.';
+		}
+
 		this.confirmationService.confirm({
-            message: 'Deseja realmente reativar esse usuário?',
-            header: 'Confirmação de reativação',
+            message: msg,
+            header: header,
             acceptButtonStyleClass:"p-button-danger",
 			acceptLabel: 'Sim',
 			rejectLabel: 'Não',
             accept: () => {
-				this.changeStatus(id, false, 'Usuário reativado.');
+				this.changeStatus(id, reativar, successMsg);
             },
         });
 	}
@@ -98,5 +95,9 @@ export class UsersListComponent implements OnInit {
 				this.getData();
 			});
 		});
+	}
+
+	permissions(id: string) {
+		this.router.navigate([`/adm/user/permission/${id}`]);
 	}
 }

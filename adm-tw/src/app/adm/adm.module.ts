@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { TableModule } from 'primeng/table';
@@ -14,6 +15,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
+import { PickListModule } from 'primeng/picklist';
 
 import { AdmRoutingModule } from './adm-routing.module';
 import { AdmService } from './adm.service';
@@ -27,6 +29,7 @@ import { RoleListComponent } from './role/role-list/role-list.component';
 import { RoleFormComponent } from './role/role-form/role-form.component';
 import { PermissionListComponent } from './permission/permission-list/permission-list.component';
 import { PermissionFormComponent } from './permission/permission-form/permission-form.component';
+import { UserPermissionFormComponent } from './user-permission/user-permission-form/user-permission-form.component';
 
 @NgModule({
     declarations: [
@@ -36,9 +39,11 @@ import { PermissionFormComponent } from './permission/permission-form/permission
         RoleFormComponent,
         PermissionListComponent,
         PermissionFormComponent,
+        UserPermissionFormComponent,
     ],
     imports: [
         CommonModule,
+        FormsModule,
         ReactiveFormsModule,
         AdmRoutingModule,
         TableModule,
@@ -51,7 +56,8 @@ import { PermissionFormComponent } from './permission/permission-form/permission
         PasswordModule,
         TooltipModule,
         ConfirmDialogModule,
-        DropdownModule
+        DropdownModule,
+        PickListModule
     ],
     providers: [
         AdmService,

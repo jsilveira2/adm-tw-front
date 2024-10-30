@@ -1,0 +1,55 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card p-fluid">
+            <h5>Usuários da Guild</h5>
+
+            <div class="p-fluid p-formgrid grid">
+                <div class="field col-12 md:col-6">
+                    <label htmlFor="guild" class="required">Guild</label>
+                    <p-dropdown [options]="guildList" optionValue="id" [filter]="true" filterBy="name"
+                        [virtualScroll]="true" [virtualScrollItemSize]="38" id="guild" placeholder="Selecione a Guild"
+                        (onChange)="changeGuild($event.value)" [(ngModel)]="selectedGuildId" [disabled]="disableGuildSelect">
+                        <ng-template pTemplate="selectedItem" let-selectedOption>
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ selectedOption.name }}</div>
+                            </div>
+                        </ng-template>
+
+                        <ng-template let-user pTemplate="item">
+                            <div class="flex align-items-center gap-2">
+                                <div>{{ user.name }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+
+                <div class="field col-12">
+                    <p-pickList [source]="userList" [target]="userGuildList" sourceHeader="Usuários disponíveis"
+                        targetHeader="Usuários da guild" [dragdrop]="true" [responsive]="true"
+                        [sourceStyle]="{ height: '30rem' }" [targetStyle]="{ height: '30rem' }" filterBy="name"
+                        sourceFilterPlaceholder="Pesquisar" targetFilterPlaceholder="Pesquisar">
+                        <ng-template let-user pTemplate="item">
+                            <div class="flex flex-wrap p-2 align-items-center gap-3">
+                                <div class="flex-1 flex flex-column gap-2">
+                                    <span class="font-bold">
+                                        {{ user.name }}
+                                    </span>
+                                    <div class="flex align-products-center gap-2">
+                                        <i class="pi pi-tag text-sm"></i>
+                                        <span>
+                                            {{ user.email }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-pickList>
+                </div>
+
+                <div class="field col-12 md:col-2">
+                    <p-button (click)="save()" label="Salvar" icon="pi pi-save"></p-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

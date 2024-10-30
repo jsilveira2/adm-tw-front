@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '../user.model';
-import { UserService } from '../user.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../shared/service/notification.service';
 import { Severity } from '../../../shared/model/severity.model';
+
+import { User } from '../user.model';
+import { UserService } from '../user.service';
 
 @Component({
 	selector: 'app-users-form',
@@ -12,10 +14,17 @@ import { Severity } from '../../../shared/model/severity.model';
 })
 export class UsersFormComponent implements OnInit {
 
+	id!: string | null;
 	form!: FormGroup;
 	noMatchPassword!: boolean;
 
-	constructor(private service: UserService, private fb: FormBuilder, private notificationService: NotificationService) { }
+	constructor(
+		private service: UserService, 
+		private fb: FormBuilder, 
+		private notificationService: NotificationService,
+		private route: ActivatedRoute,
+		private router: Router
+	) { }
 
 	ngOnInit(): void {
 		this.form = this.fb.group({
@@ -23,6 +32,28 @@ export class UsersFormComponent implements OnInit {
 			email: ['', [Validators.required, Validators.email]],
 			password: ['', Validators.required],
 			passwordConfirm: ['', Validators.required]
+		});
+
+		this.route.paramMap.subscribe(params => {
+			this.id = params.get('id');
+			if (this.id) {
+				this.loadObject(this.id);
+			}
+		});
+	}
+
+	loadObject(id: string) {
+		this.service.getById(id).subscribe({
+			next: (result: User) => {
+				this.form.patchValue({
+					name: result.name,
+					email: result.email
+				});
+			},
+			error: (error) => {
+				this.notificationService.showToast(Severity.warning, 'Falha', 'Não foi possível carregar o usuário');
+				this.router.navigate(['/adm/user/list']);
+			}
 		});
 	}
 
@@ -38,7 +69,7 @@ export class UsersFormComponent implements OnInit {
 			}
 
 			this.noMatchPassword = false;
-			const user = new User({
+			const obj = new User({
 				name: this.form.get('name')?.value,
 				email: this.form.get('email')?.value,
 				password: this.form.get('password')?.value,
@@ -46,12 +77,22 @@ export class UsersFormComponent implements OnInit {
 				isLocked: false
 			});
 
-			this.service.save(user).subscribe(result => {
-				if (result.id) {
-					this.notificationService.showToast(Severity.success, 'Sucesso', 'Usuário cadastrado com sucesso!');
-					this.form.reset();
-				}
-			});
+			if (!this.id) {
+				this.service.save(obj).subscribe(result => {
+					if (result.id) {
+						this.notificationService.showToast(Severity.success, 'Sucesso', 'Usuário cadastrado com sucesso!');
+						this.form.reset();
+					}
+				});
+			} else {
+				obj.id = this.id;
+				this.service.update(obj.id, obj).subscribe(result => {
+					if (result.id) {
+						this.notificationService.showToast(Severity.success, 'Sucesso', 'Usuário atualizado com sucesso!');
+						this.form.reset();
+					}
+				});
+			}
 		} else {
 			this.form.markAllAsTouched();
 		}

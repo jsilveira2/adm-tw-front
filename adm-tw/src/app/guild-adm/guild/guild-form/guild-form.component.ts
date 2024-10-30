@@ -5,21 +5,21 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../shared/service/notification.service';
 import { Severity } from '../../../shared/model/severity.model';
 
-import { Role } from '../role.model';
-import { RoleService } from '../role.service';
+import { Guild } from '../guild.model';
+import { GuildService } from '../guild.service';
 
 @Component({
-	selector: 'app-role-form',
-	templateUrl: './role-form.component.html',
-	styleUrl: './role-form.component.scss'
+	selector: 'app-guild-form',
+	templateUrl: './guild-form.component.html',
+	styleUrl: './guild-form.component.scss'
 })
-export class RoleFormComponent implements OnInit {
+export class GuildFormComponent {
 
 	id!: string | null;
 	form!: FormGroup;
 
 	constructor(
-		private service: RoleService, 
+		private service: GuildService, 
 		private fb: FormBuilder, 
 		private notificationService: NotificationService,
 		private route: ActivatedRoute,
@@ -28,8 +28,7 @@ export class RoleFormComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.form = this.fb.group({
-			name: ['', Validators.required],
-			codeName: ['', [Validators.required]]
+			name: ['', Validators.required]
 		});
 
 		this.route.paramMap.subscribe(params => {
@@ -42,31 +41,29 @@ export class RoleFormComponent implements OnInit {
 
 	loadObject(id: string) {
 		this.service.getById(id).subscribe({
-			next: (result: Role) => {
+			next: (result: Guild) => {
 				this.form.patchValue({
 					name: result.name,
-					codeName: result.codeName
 				});
 			},
 			error: (error) => {
-				this.notificationService.showToast(Severity.warning, 'Falha', 'Não foi possível carregar o papel');
-				this.router.navigate(['/adm/role/list']);
+				this.notificationService.showToast(Severity.warning, 'Falha', 'Não foi possível carregar a guild');
+				this.router.navigate(['/guild-adm/guild/list']);
 			}
 		});
 	}
 
 	save(): void {
 		if (this.form.valid) {
-			const obj = new Role({
+			const obj = new Guild({
 				name: this.form.get('name')?.value,
-				codeName: this.form.get('codeName')?.value,
-				isActive: true,
+				isActive: true
 			});
 
 			if (!this.id) {
 				this.service.save(obj).subscribe(result => {
 					if (result.id) {
-						this.notificationService.showToast(Severity.success, 'Sucesso', 'Papel cadastrado com sucesso!');
+						this.notificationService.showToast(Severity.success, 'Sucesso', 'Guild cadastrada com sucesso!');
 						this.form.reset();
 					}
 				});
@@ -74,7 +71,7 @@ export class RoleFormComponent implements OnInit {
 				obj.id = this.id;
 				this.service.update(obj.id, obj).subscribe(result => {
 					if (result.id) {
-						this.notificationService.showToast(Severity.success, 'Sucesso', 'Papel atualizado com sucesso!');
+						this.notificationService.showToast(Severity.success, 'Sucesso', 'Guild atualizada com sucesso!');
 					}
 				});
 			}

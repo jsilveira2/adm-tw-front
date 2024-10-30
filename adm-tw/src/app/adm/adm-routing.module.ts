@@ -6,6 +6,7 @@ import { RoleListComponent } from './role/role-list/role-list.component';
 import { RoleFormComponent } from './role/role-form/role-form.component';
 import { PermissionListComponent } from './permission/permission-list/permission-list.component';
 import { PermissionFormComponent } from './permission/permission-form/permission-form.component';
+import { UserPermissionFormComponent } from './user-permission/user-permission-form/user-permission-form.component';
 
 @NgModule({
     imports: [
@@ -16,6 +17,8 @@ import { PermissionFormComponent } from './permission/permission-form/permission
                     { path: 'list', component: UsersListComponent },
                     { path: 'form', component: UsersFormComponent },
                     { path: 'form/:id', component: UsersFormComponent },
+                    { path: 'permission', component: UserPermissionFormComponent },
+                    { path: 'permission/:id', component: UserPermissionFormComponent },
                 ]
             },
             {

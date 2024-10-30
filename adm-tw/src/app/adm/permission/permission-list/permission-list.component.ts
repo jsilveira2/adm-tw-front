@@ -58,28 +58,25 @@ export class PermissionListComponent {
 		this.router.navigate([`/adm/permission/form/${id}`]);
 	}
 
-	disable(id: string) {
-		this.confirmationService.confirm({
-            message: 'Deseja realmente inativar essa permissão?',
-            header: 'Confirmação de inativação',
-            acceptButtonStyleClass:"p-button-danger",
-			acceptLabel: 'Sim',
-			rejectLabel: 'Não',
-            accept: () => {
-				this.changeStatus(id, false, 'Permissão inativada.');
-            },
-        });
-	}
+	enableOrDisable(id: string, reativar: boolean = false) {
+		let msg = 'Deseja realmente inativar essa permissão?';
+		let header = 'Confirmação de inativação';
+		let successMsg = 'Permissão inativada.';
 
-	enable(id: string) {
+		if (reativar) {
+			msg = 'Deseja realmente reativar essa permissão?';
+			header = 'Confirmação de reativação';
+			successMsg = 'Permissão reativada.';
+		}
+
 		this.confirmationService.confirm({
-            message: 'Deseja realmente reativar essa permissão?',
-            header: 'Confirmação de reativação',
+            message: msg,
+            header: header,
             acceptButtonStyleClass:"p-button-danger",
 			acceptLabel: 'Sim',
 			rejectLabel: 'Não',
             accept: () => {
-				this.changeStatus(id, true, 'Permissão reativada.');
+				this.changeStatus(id, reativar, successMsg);
             },
         });
 	}
